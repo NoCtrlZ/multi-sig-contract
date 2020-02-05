@@ -1,0 +1,27 @@
+{
+  "name": "multi-sig-contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "truffle compile",
+    "truffle": "truffle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NoCtrlZ/multi-sig-contract.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NoCtrlZ/multi-sig-contract/issues"
+  },
+  "homepage": "https://github.com/NoCtrlZ/multi-sig-contract#readme",
+  "dependencies": {
+    "truffle": "^5.1.11"
+  }
+}
