@@ -17,7 +17,7 @@ contract Goverment {
     }
 
     // check whether proposal hash is not exist and pulic key x y is same length
-    modifier isValidProposal(_publicKeysX, _publicKeysY, proposalHash) {
+    modifier isValidProposal(uint256[] memory _publicKeysX, uint256[] memory _publicKeysY, bytes32 proposalHash) {
         require(0 == uint256(proposals[proposalHash].proposalHash) && _publicKeysX.length == _publicKeysY.length);
         _;
     }
@@ -30,15 +30,15 @@ contract Goverment {
         uint256 deadline
     )
     public
-    isValidProposal
+    isValidProposal(_publicKeysX, _publicKeysY, keccak256(abi.encodePacked(proposalTitle)))
     {
-        bytes32 proposalHash = keccak256(abi.encodePacked(proposalTitle, block.timestamp));
+        bytes32 proposalHash = keccak256(abi.encodePacked(proposalTitle));
         uint256 threshold = _publicKeysX.length / 2;
         proposals[proposalHash] = Proposal (
             proposalTitle,
             proposalHash,
             false,
-            new RingMultisig(_publicKeysX, _publicKeysY, threshold, proposalHash),
+            new RingSig(_publicKeysX, _publicKeysY, threshold, proposalHash),
             deadline,
             msg.sender,
             threshold
@@ -46,7 +46,7 @@ contract Goverment {
         proposalIndex.push(proposalHash);
     }
 
-    // function agree(bytes32 _judgementHash, uint256[2] _tagPoint, uint256[] ctlist) public beforeDeadline(_judegementHash) {
+    // function agree(bytes32 _judgementHash, uint256[2] memory _tagPoint, uint256[] memory ctlist) public beforeDeadline(_judegementHash) {
 
     // }
 }
