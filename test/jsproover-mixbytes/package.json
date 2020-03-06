@@ -1,0 +1,27 @@
+{
+  "name": "jsproover-mixbytes",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aes-js": "^3.1.0",
+    "await-semaphore": "^0.1.3",
+    "bn.js": "^4.11.8",
+    "elliptic": "^6.4.0",
+    "ethereumjs-util": "^5.1.4",
+    "secure-random": "^1.1.1",
+    "semaphore-async-await": "^1.5.1",
+    "truffle": "^4.1.3",
+    "truffle-test-utils": "0.0.2",
+    "web3": "^1.0.0-beta.30"
+  },
+  "devDependencies": {
+    "@types/node": "^9.6.1",
+    "types-bn": "0.0.1"
+  }
+}

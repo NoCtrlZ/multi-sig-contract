@@ -10,4 +10,6 @@ $ yarn
 $ yarn test
 ```
 ## Contracts Reference
-Ring Signature -> [mixbytes/ring-multisig](https://github.com/mixbytes/ring-multisig)
+Ring Signature  
+Contracts -> [mixbytes/ring-multisig](https://github.com/mixbytes/ring-multisig)  
+Module -> [jsproover-mixbytes](https://registry.npmjs.org/jsproover-mixbytes/-/jsproover-mixbytes-1.0.1.tgz)

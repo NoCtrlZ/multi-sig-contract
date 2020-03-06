@@ -2,7 +2,7 @@ pragma solidity 0.6.0;
 
 import './RingSig.sol';
 
-contract Goverment {
+contract Government {
     mapping(bytes32 => Proposal) proposals;
     bytes32[] proposalIndex;
 

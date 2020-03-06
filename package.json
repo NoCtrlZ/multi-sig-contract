@@ -22,6 +22,14 @@
   },
   "homepage": "https://github.com/NoCtrlZ/multi-sig-contract#readme",
   "dependencies": {
+    "bn.js": "^5.1.1",
+    "brorand": "^1.1.0",
+    "ethereumjs-util": "^6.2.0",
+    "hash.js": "^1.1.7",
+    "hmac-drbg": "^1.0.1",
+    "minimalistic-assert": "^1.0.1",
+    "minimalistic-crypto-utils": "^1.0.1",
+    "secure-random": "^1.1.2",
     "truffle": "^5.1.11"
   }
 }
