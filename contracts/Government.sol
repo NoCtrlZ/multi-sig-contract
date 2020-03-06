@@ -22,6 +22,22 @@ contract Goverment {
         _;
     }
 
+    modifier beforeDeadline(bytes32 _proposalHash) {
+        require(proposals[_proposalHash].deadline > now);
+        _;
+    }
+
+    modifier multiSigned(RingSig _multiSig, uint256[2] memory _tagPoint, uint256[] memory _ctlist) {
+        require(_multiSig.getTagsCount() < _multiSig.threshold());
+
+        require(_multiSig.isSignatureValid(_tagPoint, _ctlist));
+        _multiSig.addTag(_tagPoint[0]);
+
+        if(_multiSig.getTagsCount() >= _multiSig.threshold()) {
+            _;
+        }
+    }
+
     // Initialize proposal with public key and deadline
     function propose(
         string memory proposalTitle,
@@ -46,7 +62,15 @@ contract Goverment {
         proposalIndex.push(proposalHash);
     }
 
-    // function agree(bytes32 _judgementHash, uint256[2] memory _tagPoint, uint256[] memory ctlist) public beforeDeadline(_judegementHash) {
-
-    // }
+    function agree(bytes32 _proposalHash, uint256[2] memory _tagPoint, uint256[] memory ctlist)
+    public
+    beforeDeadline(_proposalHash)
+    multiSigned(
+        proposals[_proposalHash].ringsig,
+        _tagPoint,
+        ctlist
+    )
+    {
+        proposals[_proposalHash].isApproved = true;
+    }
 }
