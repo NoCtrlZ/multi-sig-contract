@@ -55,7 +55,7 @@ contract EfficientCoinMixer {
             (tokenAddress, isAuthorized) = tokenProxy.getTokenInfo(_assetID);
             require(isAuthorized);
             ERC20Token token = ERC20Token(tokenAddress);
-            require(token.transferFrom(msg.sender, this, _value));
+            require(token.transferFrom(msg.sender, address(this), _value));
         }
         uint256 convertedValue = tokenProxy.convertFromDeposit(_value, _assetID);
         require(convertedValue < 2**m);

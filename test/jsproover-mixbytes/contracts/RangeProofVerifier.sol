@@ -127,13 +127,13 @@ contract RangeProofVerifier {
         alt_bn128.G1Point[m] memory gs = publicParameters.gs();
         alt_bn128.G1Point[m] memory hs = publicParameters.hs();
         Board memory b;
-        b.y = uint256(keccak256(input.X, input.Y, proof.A.X, proof.A.Y, proof.S.X, proof.S.Y)).mod();
+        b.y = uint256(keccak256(abi.encodePacked(input.X, input.Y, proof.A.X, proof.A.Y, proof.S.X, proof.S.Y))).mod();
         b.ys = powers(b.y);
-        b.z = uint256(keccak256(b.y)).mod();
+        b.z = uint256(keccak256(abi.encodePacked(b.y))).mod();
         b.zSquared = b.z.mul(b.z);
         b.zCubed = b.zSquared.mul(b.z);
         b.twoTimesZSquared = times(powers(2), b.zSquared);
-        b.x = uint256(keccak256(proof.commits[0].X, proof.commits[0].Y, proof.commits[1].X, proof.commits[1].Y)).mod();
+        b.x = uint256(keccak256(abi.encodePacked(proof.commits[0].X, proof.commits[0].Y, proof.commits[1].X, proof.commits[1].Y))).mod();
         b.lhs = G.mul(proof.t).add(H.mul(proof.tauX));
         b.k = sumScalars(b.ys).mul(b.z.sub(b.zSquared)).sub(b.zCubed.mul(2 ** m).sub(b.zCubed));
         b.rhs = proof.commits[0].mul(b.x).add(proof.commits[1].mul(b.x.mul(b.x)));
@@ -142,7 +142,7 @@ contract RangeProofVerifier {
         if (!b.rhs.eq(b.lhs)) {
             return false;
         }
-        b.uChallenge = uint256(keccak256(proof.tauX, proof.mu, proof.t)).mod();
+        b.uChallenge = uint256(keccak256(abi.encodePacked(proof.tauX, proof.mu, proof.t))).mod();
         b.u = G.mul(b.uChallenge);
         alt_bn128.G1Point[m] memory hPrimes = haddamard(hs, powers(b.y.inv())); // the most expensive, roughly 64*40000 gas
         uint256[m] memory hExp = addVectors(times(b.ys, b.z), b.twoTimesZSquared);

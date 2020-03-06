@@ -20,7 +20,7 @@ contract PublicParameters {
     uint256[2] public baseH;
     uint256[m*2] public gVector;
     uint256[m*2] public hVector;
-    
+
     uint256 public lastGcreated = 0;
     uint256 public lastHcreated = 0;
 
@@ -72,7 +72,7 @@ contract PublicParameters {
         alt_bn128.G1Point memory g1p = alt_bn128.uintToCurvePoint(uint256(h));
         return [g1p.X, g1p.Y];
     }
-    
+
     function peddersenBaseH() public view returns (uint256[2] memory point) {
         bytes32 h = keccak256("H");
         alt_bn128.G1Point memory g1p = alt_bn128.uintToCurvePoint(uint256(h));
@@ -81,22 +81,22 @@ contract PublicParameters {
 
     function getGVectorComponent(uint256 index) public view returns (uint256[2] memory point) {
         require(index < m);
-        bytes32 h = keccak256("G", index.uintToBytes());
+        bytes32 h = keccak256(abi.encodePacked("G", index.uintToBytes()));
         alt_bn128.G1Point memory g1p = alt_bn128.uintToCurvePoint(uint256(h));
         return [g1p.X, g1p.Y];
     }
 
     function getHVectorComponent(uint256 index) public view returns (uint256[2] memory point) {
         require(index < m);
-        bytes32 h = keccak256("H", index.uintToBytes());
+        bytes32 h = keccak256(abi.encodePacked("H", index.uintToBytes()));
         alt_bn128.G1Point memory g1p = alt_bn128.uintToCurvePoint(uint256(h));
         return [g1p.X, g1p.Y];
     }
-    
+
     function getGVector() public view returns (uint256[2*m] memory points) {
         return gVector;
     }
-    
+
     function getHVector() public view returns (uint256[2*m] memory points) {
         return hVector;
     }

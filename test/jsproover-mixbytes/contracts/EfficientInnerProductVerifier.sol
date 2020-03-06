@@ -74,7 +74,7 @@ contract EfficientInnerProductVerifier {
         for (uint256 i = 0; i < n; i++) {
             b.l = alt_bn128.G1Point(ls[2*i], ls[2*i+1]);
             b.r = alt_bn128.G1Point(rs[2*i], rs[2*i+1]);
-            b.x = uint256(keccak256(b.l.X, b.l.Y, b.c.X, b.c.Y, b.r.X, b.r.Y)).mod();
+            b.x = uint256(keccak256(abi.encodePacked(b.l.X, b.l.Y, b.c.X, b.c.Y, b.r.X, b.r.Y))).mod();
             b.xInv = b.x.inv();
             // b.c = b.l.mul(b.x.modExp(2))
             //     .add(b.r.mul(b.xInv.modExp(2)))

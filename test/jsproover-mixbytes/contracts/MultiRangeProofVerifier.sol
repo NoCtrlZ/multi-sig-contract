@@ -61,7 +61,7 @@ contract MultiRangeProofVerifier {
         ipProof.rs = rs_coords;
         ipProof.a = scalars[3];
         ipProof.b = scalars[4];
-        uint256 yPrecomputed = uint256(keccak256(abi.encodePacked(commitments, multiRangeProof.aI.X, multiRangeProof.aI.Y, multiRangeProof.s.X, multiRangeProof.s.Y)).mod());
+        uint256 yPrecomputed = uint256(keccak256(abi.encodePacked(commitments, multiRangeProof.aI.X, multiRangeProof.aI.Y, multiRangeProof.s.X, multiRangeProof.s.Y))).mod();
         emit DebugEvent(0, 1, gasleft());
         return verifyInternal(yPrecomputed, input, multiRangeProof);
     }
@@ -121,7 +121,7 @@ contract MultiRangeProofVerifier {
         b.bitsPerNumber = m / input.length;
         b.y = yPrecomputed;
         b.ys = powers(b.y);
-        b.z = uint256(keccak256(abi.encodePacked(b.y)).mod());
+        b.z = uint256(keccak256(abi.encodePacked(b.y))).mod();
         b.zs = powers(b.z, 2, input.length);
         b.twos = powers(2, 0, b.bitsPerNumber);
 
@@ -131,7 +131,7 @@ contract MultiRangeProofVerifier {
         // const k = ys.sum().mul(z.sub(zs.get(0))).sub(zSum.shln(bitsPerNumber).sub(zSum)).umod(q);
         b.k = sumScalars(b.ys).mul(b.z.sub(b.zs[0])).sub(b.zSum.mul(2 ** b.bitsPerNumber).sub(b.zSum));
 
-        b.x = uint256(keccak256(abi.encodePacked(proof.tCommits[0].X, proof.tCommits[0].Y, proof.tCommits[1].X, proof.tCommits[1].Y)).mod());
+        b.x = uint256(keccak256(abi.encodePacked(proof.tCommits[0].X, proof.tCommits[0].Y, proof.tCommits[1].X, proof.tCommits[1].Y))).mod();
 
         // const lhs = base.commit(t, tauX);
         b.lhs = G.mul(proof.t).add(H.mul(proof.tauX));
@@ -150,7 +150,7 @@ contract MultiRangeProofVerifier {
         }
 
         // const uChallenge = ProofUtils.computeChallengeForBigIntegers(q,[tauX, mu, t]);
-        b.uChallenge = uint256(keccak256(abi.encodePacked(proof.tauX, proof.mu, proof.t)).mod());
+        b.uChallenge = uint256(keccak256(abi.encodePacked(proof.tauX, proof.mu, proof.t))).mod();
 
         // const u = base.g.mul(uChallenge);
         b.u = G.mul(b.uChallenge);

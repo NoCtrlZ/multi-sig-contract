@@ -52,7 +52,7 @@ contract CoinMixer {
             (tokenAddress, isAuthorized) = tokenProxy.getTokenInfo(_assetID);
             require(isAuthorized);
             ERC20Token token = ERC20Token(tokenAddress);
-            require(token.transferFrom(msg.sender, this, _value));
+            require(token.transferFrom(msg.sender, address(this), _value));
         }
         uint256 convertedValue = tokenProxy.convertFromDeposit(_value, _assetID);
         require(convertedValue < 2**m);
@@ -75,7 +75,7 @@ contract CoinMixer {
     ) public returns (bool success) {
         alt_bn128.G1Point[] memory reusablePoints = new alt_bn128.G1Point[](3);
         reusablePoints[0] = outputs[_scalars[12]][_scalars[0]][_scalars[1]]; // old output
-        bytes32 hashToVerify = keccak256(reusablePoints[0].X, reusablePoints[0].Y);
+        bytes32 hashToVerify = keccak256(abi.encodePacked(reusablePoints[0].X, reusablePoints[0].Y));
         reusablePoints[1] = publicParameters.generator(); //signature generator
         reusablePoints[2] = alt_bn128.G1Point(_scalars[0], _scalars[1]); //public key associated with an output
         require(schnorrVerifier.verifySignatureAsPoints(hashToVerify, _scalars[8], _scalars[9], reusablePoints[1], reusablePoints[2]));
@@ -84,7 +84,7 @@ contract CoinMixer {
         reusablePoints[1] = alt_bn128.G1Point(coords[0], coords[1]); // commitment to output 0
         reusablePoints[2] = alt_bn128.G1Point(coords[10], coords[11]); // commitment to output 1
         reusablePoints[0] = reusablePoints[0].add(reusablePoints[1].neg()).add(reusablePoints[2].neg()); // should be in a form r*H
-        hashToVerify = keccak256(reusablePoints[0].X, reusablePoints[0].Y);
+        hashToVerify = keccak256(abi.encodePacked(reusablePoints[0].X, reusablePoints[0].Y));
         require(schnorrVerifier.verifySignatureAsPoints(hashToVerify, _scalars[10], _scalars[11], publicParameters.H(), reusablePoints[0]));
         outputs[_scalars[12]][_scalars[2]][_scalars[3]] = reusablePoints[1];
         emit Transfer(_scalars[6], _scalars[2], _scalars[3], _scalars[12], _exchangeData0);
@@ -104,12 +104,12 @@ contract CoinMixer {
         alt_bn128.G1Point[] memory reusablePoints = new alt_bn128.G1Point[](3);
 
         reusablePoints[0] = outputs[_assetID][_publicKey0[0]][_publicKey0[1]]; // old output 0
-        bytes32 hashToVerify = keccak256(reusablePoints[0].X, reusablePoints[0].Y);
+        bytes32 hashToVerify = keccak256(abi.encodePacked(reusablePoints[0].X, reusablePoints[0].Y));
         reusablePoints[1] = alt_bn128.G1Point(_publicKey0[0], _publicKey0[1]); //public key associated with an output
         require(schnorrVerifier.verifySignatureAsPoints(hashToVerify, _signature0[0], _signature0[1], publicParameters.generator(), reusablePoints[1]));
 
         reusablePoints[2] = outputs[_assetID][_publicKey1[0]][_publicKey1[1]]; // old output 0
-        hashToVerify = keccak256(reusablePoints[2].X, reusablePoints[2].Y);
+        hashToVerify = keccak256(abi.encodePacked(reusablePoints[2].X, reusablePoints[2].Y));
         reusablePoints[1] = alt_bn128.G1Point(_publicKey1[0], _publicKey1[1]); //public key associated with an output
         require(schnorrVerifier.verifySignatureAsPoints(hashToVerify, _signature1[0], _signature1[1], publicParameters.generator(), reusablePoints[1]));
 

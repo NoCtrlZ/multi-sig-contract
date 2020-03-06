@@ -13,7 +13,7 @@ library Conversion {
         while (num != 0) {
             uint256 remainder = num % 10;
             num = num / 10;
-            reversed[i++] = byte(48 + remainder);
+            reversed[i++] = toBytes(48 + remainder);
         }
         s = new bytes(i);
         for (uint256 j = 0; j < i; j++) {
@@ -21,4 +21,10 @@ library Conversion {
         }
         return s;
     }
+
+    function toBytes(uint256 x) public pure returns (bytes1 b) {
+        b = new bytes1(8);
+        assembly { mstore(add(b, 8), x)
+    }
+}
 }
